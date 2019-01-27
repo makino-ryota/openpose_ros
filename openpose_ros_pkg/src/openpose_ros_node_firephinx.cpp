@@ -64,8 +64,8 @@ std::string model_folder_location = package_path + "/../openpose/models/";
 #define NET_RES_Y 368
 /*DEFINE_string(resolution,               "1280x720",     "The image resolution (display and output). Use \"-1x-1\" to force the program to use the"
                                                         " default images resolution.");*/
-#define OUTPUT_RES_X 1280 // Display Resolution Output Width
-#define OUTPUT_RES_Y 720  // Display Resolution Output Height
+#define OUTPUT_RES_X 640 // Display Resolution Output Width
+#define OUTPUT_RES_Y 480  // Display Resolution Output Height
 
 //DEFINE_string(model_pose,               "COCO",         "Model to be used (e.g. COCO, MPI, MPI_4_layers).");
 #define MODEL_POSE  "COCO"                 //"Model to be used (e.g. COCO, MPI, MPI_4_layers).";

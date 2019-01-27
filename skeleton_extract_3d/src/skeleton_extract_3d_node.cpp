@@ -26,8 +26,8 @@
 
 // Set resolution
 
-#define width  1280
-#define height 720
+#define width  640
+#define height 480
 
 
 
