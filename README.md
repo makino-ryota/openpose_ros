@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # OpenPose ROS
 ROS wrapper for OpenPose ( https://github.com/CMU-Perceptual-Computing-Lab/openpose ) allows the estimation of 2d multi-person pose from a single RGB camera (see commit number `a1e0a5f4136e702b5731a268c2993fb75ca4753c` ). Based on https://github.com/stevenjj/openpose_ros .
 
@@ -223,3 +224,6 @@ Arduengo, M., Jorgensen, S.J., Hambuchen, K., Sentis, L., Moreno-Noguer, F., Ale
 
 https://upcommons.upc.edu/handle/2117/110929
 # for share
+=======
+# openpose_ros
+>>>>>>> origin/master

@@ -50,7 +50,7 @@ DEFINE_int32(logging_level,             4,              "The logging level. Inte
                                                         " 255 will not output any. Current OpenPose library messages are in the range 0-4: 1 for"
                                                         " low priority messages and 4 for important ones.");
 // Camera Topic
-DEFINE_string(camera_topic,             "/camera/color/image_rect_color",      "Image topic that OpenPose will process.");
+DEFINE_string(camera_topic,             "/camera/color/image_raw",      "Image topic that OpenPose will process.");
 // OpenPose
 std::string package_path = ros::package::getPath("openpose_ros_pkg");
 std::string model_folder_location = package_path + "/../openpose/models/";
@@ -60,8 +60,8 @@ std::string model_folder_location = package_path + "/../openpose/models/";
 /*DEFINE_string(net_resolution,           "656x368",      "Multiples of 16. If it is increased, the accuracy usually increases. If it is decreased,"
                                                         " the speed increases.");
 // "Multiples of 16. the accuracy usually increases. If it is decreased, the speed increases                                                        */
-#define NET_RES_X 656
-#define NET_RES_Y 368
+#define NET_RES_X 656 
+#define NET_RES_Y 368  
 /*DEFINE_string(resolution,               "1280x720",     "The image resolution (display and output). Use \"-1x-1\" to force the program to use the"
                                                         " default images resolution.");*/
 #define OUTPUT_RES_X 1280 // Display Resolution Output Width
@@ -153,7 +153,7 @@ int openPoseROSTutorial()
     op::Point<int> netInputSize;
     netInputSize.x = NET_RES_X; //656;
     netInputSize.y = NET_RES_Y; //368;
-
+    
     // Declare Node Handle
     ros::NodeHandle nh;
 
@@ -162,7 +162,7 @@ int openPoseROSTutorial()
     openpose_ros_msgs::GetPersons srv;
 
     // Declare Publisher
-    ros::Publisher input_image_pub  = nh.advertise<sensor_msgs::Image>( "/openpose_ros/input_image", 0 );
+    ros::Publisher input_image_pub  = nh.advertise<sensor_msgs::Image>( "/openpose_ros/input_image", 0 );  
 
     // Initialize cv_ptr
     sensor_msgs::Image ros_image;
@@ -190,7 +190,7 @@ int openPoseROSTutorial()
     op::PoseExtractorCaffe poseExtractorCaffe{netInputSize, netOutputSize, outputSize, FLAGS_num_scales, poseModel,
                                               model_folder_location, FLAGS_num_gpu_start};
     op::PoseRenderer poseRenderer{netOutputSize, outputSize, poseModel, nullptr, !FLAGS_disable_blending, (float)FLAGS_alpha_pose};
-    //op::PoseRenderer poseRenderer{netOutputSize, outputSize, poseModel, nullptr, true, 0.6};
+    //op::PoseRenderer poseRenderer{netOutputSize, outputSize, poseModel, nullptr, true, 0.6};    
 
     op::OpOutputToCvMat opOutputToCvMat{outputSize};
     // Step 4 - Initialize resources on desired thread (in this case single thread, i.e. we init resources here)
@@ -216,8 +216,8 @@ int openPoseROSTutorial()
         {
             cv::Mat inputImage = cvImagePtr->image;
 
-            // Convert to ros Image msg
-            ros_image = *(cvImagePtr->toImageMsg());
+	    // Convert to ros Image msg
+    	    ros_image = *(cvImagePtr->toImageMsg());
 
             // Step 2 - Format input image to OpenPose input and output formats
             op::Array<float> netInputArray;
@@ -234,19 +234,19 @@ int openPoseROSTutorial()
       srv.request.image = ros_image;
         if (client.call(srv))
         {
-
+          
           //publish input image, subscribe /openpose_ros/input_image to get the input image
-            input_image_pub.publish(ros_image);
+    	    input_image_pub.publish(ros_image);
 
-          //subscribe to /openpose_ros/detected_poses_image to get the images
-          //subscribe to /openpose_ros/detected_poses_keypoints to get the keypoints in (x,y,score) format
+	  //subscribe to /openpose_ros/detected_poses_image to get the images
+	  //subscribe to /openpose_ros/detected_poses_keypoints to get the keypoints in (x,y,score) format
           ROS_INFO("Call Successful");
         }
         else
         {
           ROS_ERROR("Failed to call service detect_poses");
         }
-
+    
             poseExtractorCaffe.forwardPass(netInputArray, {inputImage.cols, inputImage.rows}, scaleRatios);
             std::cout << "Forward Pass Success" << std::endl;
 
@@ -254,15 +254,15 @@ int openPoseROSTutorial()
             std::cout << "    Got Keypoints" << std::endl;
             // Step 4 - Render poseKeypoints
             poseRenderer.renderPose(outputArray, poseKeypoints);
-            std::cout << "    Rendering Pose" << std::endl;
+            std::cout << "    Rendering Pose" << std::endl;            
             // Step 5 - OpenPose output format to cv::Mat
             auto outputImage = opOutputToCvMat.formatToCvMat(outputArray);
             std::cout << "    Outputing Image" << std::endl;
 
             // ------------------------- SHOWING RESULT AND CLOSING -------------------------
             // Step 1 - Show results
-            //cv::imshow("OpenPose ROS", outputImage);
-            //cv::waitKey(1);
+            cv::imshow("OpenPose ROS", outputImage);
+            cv::waitKey(1);
             frame_count++;
         }
         ros::spinOnce();
@@ -271,7 +271,7 @@ int openPoseROSTutorial()
     // Measuring total time
     const double totalTimeSec = (double)std::chrono::duration_cast<std::chrono::nanoseconds>
                               (std::chrono::high_resolution_clock::now()-timerBegin).count() * 1e-9;
-    const std::string message = "Real-time pose estimation demo successfully finished. Total time: "
+    const std::string message = "Real-time pose estimation demo successfully finished. Total time: " 
                                 + std::to_string(totalTimeSec) + " seconds. " + std::to_string(frame_count)
                                 + " frames processed. Average fps is " + std::to_string(frame_count/totalTimeSec) + ".";
     op::log(message, op::Priority::Max);

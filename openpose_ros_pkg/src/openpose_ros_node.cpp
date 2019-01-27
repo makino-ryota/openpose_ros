@@ -319,8 +319,8 @@ int main(int argc, char** argv)
   //op::Point<int> output_size(getParam(local_nh, "output_width", 1280), getParam(local_nh, "output_height", 720));
   //op::Point<int> output_size(getParam(local_nh, "output_width", 1024), getParam(local_nh, "output_height", 1024));  
 
-  output_size.x = getParam(local_nh, "output_width", 1024);
-  output_size.y = getParam(local_nh, "output_height", 1024);
+  output_size.x = getParam(local_nh, "output_width", 1280);
+  output_size.y = getParam(local_nh, "output_height", 720);
 
   g_num_scales = getParam(local_nh, "num_scales", 1);
   g_scale_gap = getParam(local_nh, "scale_gap", 0.3);
