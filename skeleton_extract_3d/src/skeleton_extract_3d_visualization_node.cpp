@@ -63,7 +63,7 @@ public:
     visualization_msgs::Marker marker;
 
     // Set boyjoints markers
-    marker.header.frame_id = "/camera_link";
+    marker.header.frame_id = "/camera_color_optical_frame";
     marker.id = person_msg.person_ID;
     marker.ns = "joints";
     marker.header.stamp = ros::Time();
@@ -86,7 +86,7 @@ public:
    visualization_msgs::Marker skeleton;
 
    skeleton.id  = person_msg.person_ID;
-   skeleton.header.frame_id = "/camera_link";
+   skeleton.header.frame_id = "/camera_color_optical_frame";
    skeleton.ns = "skeleton";
    skeleton.header.stamp = ros::Time();
    // Skeleton will be lines
